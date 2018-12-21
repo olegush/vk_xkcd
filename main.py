@@ -132,7 +132,7 @@ if __name__ == '__main__':
                         title,
                         xkcd_api_args
                     )
-    print('7. The post published on the wall of the group:{}\n')
+    print('7. The post published on the wall of the group\n')
 
     remove_img(filename)
     print('8. Image "{}" successfully removed\n'.format(filename))
