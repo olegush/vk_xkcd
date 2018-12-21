@@ -1,5 +1,5 @@
 # XKCD comics posting to VK
-The script downloads random comic from [xkcd.com](https://xkcd.com/) and post it on the wall of VK group
+The script downloads random comic from [xkcd.com](https://xkcd.com/) and post it on the wall of [VK](https://vk.com/) group
 
 
 ### How to install
