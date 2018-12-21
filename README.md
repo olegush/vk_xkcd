@@ -10,13 +10,13 @@ Then use `pip` (or `pip3`, if there is a conflict with Python2) to install depen
 pip install -r requirements.txt
 ```
 You should:
-- create VK group
-- create standalone VK application
+- create VK group [https://vk.com/groups?w=groups_create](https://vk.com/groups?w=groups_create)
+- create standalone VK application [https://vk.com/editapp?act=create](https://vk.com/editapp?act=create)
 - get client_id of the application
-- get access_token with 'photos', 'wall' and 'offline' permissions
+- get access_token with 'photos', 'wall' and 'offline' permissions [https://vk.com/dev/access_token](https://vk.com/dev/access_token)
 
 
-.env file with enviroment variables should contain your secret key to SuperJob API.
+.env file with enviroment variables should contain your CLIENT_ID and TOKEN
 ```
 CLIENT_ID=client_id
 TOKEN=token
