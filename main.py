@@ -28,10 +28,9 @@ def get_vk_server_to_upload(vk_args, method):
 
 
 def get_vk_uploaded_data(filename, url):
-    file = open(filename, 'rb')
-    files = {'photo': file}
-    response = requests.post(url, files=files)
-    file.close()
+    with open(filename, 'rb') as file:
+        files = {'photo': file}
+        response = requests.post(url, files=files)
     return json.loads(response.text)
 
 
