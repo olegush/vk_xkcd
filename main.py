@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 
 def fetch_xkcd_image(args):
-    website, url_tail, id = args.values()
+    website, url_tail, id = args
     url = '{}/{}/{}'.format(website, id, url_tail)
     response = requests.get(url)
     json_data = json.loads(response.text)
@@ -20,7 +20,7 @@ def download_img(filename, url):
 
 
 def get_vk_server_to_upload(vk_args, method):
-    url, token, client_id, group_id, version = vk_args.values()
+    url, token, client_id, group_id, version = vk_args
     url_for_request = '{}/{}'.format(url, method)
     payload = {'access_token': token, 'group_id': group_id, 'v': version}
     response = requests.get(url_for_request, params=payload)
@@ -35,7 +35,7 @@ def get_vk_uploaded_data(filename, url):
 
 
 def save_vk_img(vk_args, method, server, photo, hash):
-    url, token, client_id, group_id, version = vk_args.values()
+    url, token, client_id, group_id, version = vk_args
     url_for_save = '{}/{}'.format(url, method)
     payload = {
         'access_token': token,
@@ -51,8 +51,8 @@ def save_vk_img(vk_args, method, server, photo, hash):
 
 
 def post_vk_post(vk_args, method, owner_id, photo_id, message, xkcd_args):
-    url, token, client_id, group_id, version = vk_args.values()
-    xkcd_api, __, comic_id = xkcd_args.values()
+    url, token, client_id, group_id, version = vk_args
+    xkcd_api, __, comic_id = xkcd_args
     url_for_post = '{}/{}'.format(url, method)
     attachments = 'photo{}_{},{}/{}/'.format(
                                         owner_id,
@@ -74,27 +74,31 @@ def post_vk_post(vk_args, method, owner_id, photo_id, message, xkcd_args):
 
 
 if __name__ == '__main__':
-    load_dotenv()
     # xkcd.com  updates every Monday, Wednesday, and Friday
     comics_quantity = 2088
     comic_id = int(random.random() * comics_quantity)
-    xkcd_api_args = {
-        'url': 'https://xkcd.com',
-        'tail': 'info.0.json',
-        'comic_id': comic_id
-    }
-    vk_api_args = {
-        'url': 'https://api.vk.com/method',
-        'token': os.getenv('TOKEN'),
-        'client_id': os.getenv('CLIENT_ID'),
-        'group_id': '175493142',
-        'version': '5.92'
-    }
+    # xkcd api url parts
+    xkcd_api_args = [
+        'https://xkcd.com',
+        'info.0.json',
+        comic_id
+    ]
+
+    load_dotenv()
+    # vk api common parameters: url, token, app client_id, group id and version
+    vk_api_args = [
+        'https://api.vk.com/method',
+        os.getenv('TOKEN'),
+        os.getenv('CLIENT_ID'),
+        '175493142',
+        '5.92'
+    ]
 
     print('1. Got random comic ID:{}\n'.format(comic_id))
 
     xkcd_img_data = fetch_xkcd_image(xkcd_api_args)
-    *__, title, img_url, __, __ = xkcd_img_data.values()
+    title = xkcd_img_data['alt']
+    img_url = xkcd_img_data['img']
     filename = img_url.split('/')[-1]
     print('2. Data from XKCD for comic "{}" was fetched\n'.format(filename))
 
@@ -108,7 +112,9 @@ if __name__ == '__main__':
     print('4. Got url to upload on VK server\n')
 
     vk_uploaded_data = get_vk_uploaded_data(filename, upload_url)
-    server, photo, hash = vk_uploaded_data.values()
+    server = vk_uploaded_data['server']
+    photo = vk_uploaded_data['photo']
+    hash = vk_uploaded_data['hash']
     print('5. The comic was uploaded on the server {}\n'.format(server))
 
     vk_saved_data = save_vk_img(
@@ -118,7 +124,8 @@ if __name__ == '__main__':
                         photo,
                         hash
                     )
-    photo_id, __, owner_id, *__ = vk_saved_data['response'][0].values()
+    photo_id = vk_saved_data['response'][0]['id']
+    owner_id = vk_saved_data['response'][0]['owner_id']
     print('6. The comic got upload ID:{}\n'.format(photo_id))
 
     vk_post_data = post_vk_post(
