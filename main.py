@@ -73,13 +73,11 @@ def post_vk_post(vk_args, method, owner_id, photo_id, message, xkcd_args):
     return json.loads(response.text)
 
 
-def remove_img(filename):
-    os.remove(filename)
-
-
 if __name__ == '__main__':
     load_dotenv()
-    comic_id = int(random.random() * 2087)
+    # xkcd.com  updates every Monday, Wednesday, and Friday
+    comics_quantity = 2088
+    comic_id = int(random.random() * comics_quantity)
     xkcd_api_args = {
         'url': 'https://xkcd.com',
         'tail': 'info.0.json',
@@ -133,5 +131,5 @@ if __name__ == '__main__':
                     )
     print('7. The post published on the wall of the group\n')
 
-    remove_img(filename)
+    os.remove(filename)
     print('8. Image "{}" successfully removed\n'.format(filename))
