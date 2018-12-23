@@ -79,7 +79,7 @@ def remove_img(filename):
 
 if __name__ == '__main__':
     load_dotenv()
-    comic_id = round(random.random() * 2087)
+    comic_id = int(random.random() * 2087)
     xkcd_api_args = {
         'url': 'https://xkcd.com',
         'tail': 'info.0.json',
